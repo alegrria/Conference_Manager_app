@@ -30,7 +30,7 @@ class GetInput:
     returns a list of strings (talk titles)
     '''
     def __init__(self):
-        self.Input = open('test_input.txt', 'r')
+        self.Input = open('test_input.txt')
     def getInput(self):
         text = self.Input.readlines()
         talkPool = []
@@ -51,8 +51,8 @@ class getTitleTime:
         self.talkPool = GetInput()
     def get_title_time(self):
         talkList = {}
-        text = self.talkPool.getInput()
-        for i in text:
+        texts = self.talkPool.getInput()
+        for i in texts:
             l = ''.join(item for item in i if item in '0123456789')
             if not l:
                 l = '5'
@@ -60,5 +60,42 @@ class getTitleTime:
                 l = l
             talkList[i] = l
         return talkList    
-    def __str__(self):
-        return self.Talklist
+        
+        
+class Sessions:
+    '''
+    uses first fit algorithm for compiling sessions and makes a dictionary of session lengths
+    takes: a set of talks and their durations
+    returns: a list of sets (sessions) and a dictionary wth session index:duration pairs
+    '''
+    def __init__(self):
+        self.talkList = getTitleTime()
+        self.session_length = {}
+    def sessionFormer(self):
+        talks = self.talkList.get_title_time()
+        sessions = []
+        for talk in talks:
+            sessionFound = False
+            talkLength = int(talks[talk])
+            for index, session in enumerate(sessions):
+                if index%2==1:
+                    sessionLength = 240
+                    size = sum(int(talks[talk]) for talk in session)
+                else:
+                    sessionLength = 180
+                    size = sum(int(talks[talk]) for talk in session)
+                if talkLength <= (sessionLength - size):
+                    sessions[index].add(talk)            
+                    sessionFound = True
+                    break
+            if sessionFound == False:
+                sessions.append({talk})
+        return sessions
+     
+    def sessionLength(self):
+        talks = self.talkList.get_title_time()
+        sessionsPool = Sessions()
+        for index, session in enumerate(sessionsPool.sessionFormer()):
+            length = sum(int(talks[talk]) for talk in session)
+            self.session_length[index] = length
+        return self.session_length
