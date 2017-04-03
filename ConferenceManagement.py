@@ -39,3 +39,26 @@ class GetInput:
             talkPool.append(li)
         self.Input.close()
         return talkPool
+        
+        
+class getTitleTime:
+    '''
+    displays title of a talk and its duration
+    takes: list of strings 
+    returns: a set with title of a talk and its duration in minutes
+    '''
+    def __init__(self):
+        self.talkPool = GetInput()
+    def get_title_time(self):
+        talkList = {}
+        text = self.talkPool.getInput()
+        for i in text:
+            l = ''.join(item for item in i if item in '0123456789')
+            if not l:
+                l = '5'
+            else:
+                l = l
+            talkList[i] = l
+        return talkList    
+    def __str__(self):
+        return self.Talklist
