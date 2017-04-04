@@ -24,34 +24,40 @@ may give a different ordering
 or combination of talks into tracks. This is acceptable; 
 you don’t need to exactly duplicate the sample output given here.
 """
-class GetInput:
+class FileReader:
     '''
     reads an input file  
     returns a list of strings (talk titles)
     '''
-    def __init__(self):
-        self.Input = open('test_input.txt')
-    def getInput(self):
-        text = self.Input.readlines()
-        talkPool = []
-        for line in text:
-            li = line.strip('\n')
-            talkPool.append(li)
-        self.Input.close()
-        return talkPool
+    def __init__(self, fileName):
+        self.fileName = fileName
+        
+    def getText(self):
+        try:
+            text = open(self.fileName)
+            lines = text.readlines()
+            talkPool = []
+            for line in lines:
+                li = line.strip('\n')
+                talkPool.append(li)
+            return talkPool
+        finally:
+            text.close()
         
         
-class getTitleTime:
+        
+class TalkParser:
     '''
     displays title of a talk and its duration
     takes: list of strings 
     returns: a set with title of a talk and its duration in minutes
     '''
-    def __init__(self):
-        self.talkPool = GetInput()
-    def get_title_time(self):
+    def __init__(self, talkPool):
+        self.talkPool = talkPool
+        
+    def getTitleTime(self):
         talkList = {}
-        texts = self.talkPool.getInput()
+        texts = self.talkPool
         for i in texts:
             l = ''.join(item for item in i if item in '0123456789')
             if not l:
@@ -62,7 +68,7 @@ class getTitleTime:
         return talkList    
         
         
-class Sessions:
+class FirstFitScheduler:
     '''
     uses first fit algorithm for compiling sessions and makes a dictionary of session lengths
     takes: a set of talks and their durations
@@ -114,6 +120,18 @@ class Sessions:
 
 class Schedule:
     def __init__(self):
+        self.morning_session = {}
+        self.lunch = '12:00PM Lunch'
+        self.afternoon_session = {}
+        self.networking_event = 'Networking'
+#    def Days():
+#    if __name__ == "__main__":
+#        main()
         
-    if __name__ == "__main__":
         
+def main(args):
+    text = InputReader(argv[0])
+    durations = Parser(text)
+    tracks = FirstFitScheduler(durations)
+    for(t in tracks) print(t.string)
+    
