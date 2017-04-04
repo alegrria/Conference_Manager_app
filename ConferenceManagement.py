@@ -70,29 +70,25 @@ class TalkParser:
         
 class FirstFitScheduler:
     '''
-    uses first fit algorithm for compiling sessions and makes a dictionary of session lengths
+    uses first fit algorithm for compiling sessions 
     takes: a set of talks and their durations
-    returns: a list of sets (sessions), a dictionary wth session index:duration pairs,
-    a list of 2 sets of lists with morning and afternoon sessions
+    returns: a list of sets (sessions)
     '''
-    def __init__(self):
-        self.talkList = getTitleTime()
-        self.session_length = {}
-        self.morning_sessions = []
-        self.afternoon_sessions = [] 
+    def __init__(self, talkList):
+        self.talkList = talkList
+
     def sessionFormer(self):
-        talks = self.talkList.get_title_time()
         sessions = []
-        for talk in talks:
+        for talk in self.talkList:
             sessionFound = False
-            talkLength = int(talks[talk])
+            talkLength = int(self.talkList[talk])
             for index, session in enumerate(sessions):
                 if index%2==1:
                     sessionLength = 240
-                    size = sum(int(talks[talk]) for talk in session)
+                    size = sum(int(self.talkList[talk]) for talk in session)
                 else:
                     sessionLength = 180
-                    size = sum(int(talks[talk]) for talk in session)
+                    size = sum(int(self.talkList[talk]) for talk in session)
                 if talkLength <= (sessionLength - size):
                     sessions[index].add(talk)            
                     sessionFound = True
@@ -101,22 +97,8 @@ class FirstFitScheduler:
                 sessions.append({talk})
         return sessions
      
-    def sessionLength(self):
-        talks = self.talkList.get_title_time()
-        sessionsPool = Sessions()
-        for index, session in enumerate(sessionsPool.sessionFormer()):
-            length = sum(int(talks[talk]) for talk in session)
-            self.session_length[index] = length
-        return self.session_length
         
-    def scheduleFormer(self):
-        sessionsPool = Sessions()
-        for index, session in enumerate(sessionsPool.sessionFormer()):
-            if index%2==1:
-                self.afternoon_sessions.append(session)            
-            else:
-                self.morning_sessions.append(session)
-        return self.morning_sessions, self.afternoon_sessions
+
 
 class Schedule:
     def __init__(self):
