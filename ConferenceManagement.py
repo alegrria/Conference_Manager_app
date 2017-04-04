@@ -55,7 +55,7 @@ class TalkParser:
     def __init__(self, talkPool):
         self.talkPool = talkPool
         
-    def getTitleTime(self):
+    def parseTalks(self):
         talkList = {}
         texts = self.talkPool
         for i in texts:
@@ -77,7 +77,7 @@ class FirstFitScheduler:
     def __init__(self, talkList):
         self.talkList = talkList
 
-    def sessionFormer(self):
+    def formSessions(self):
         sessions = []
         for talk in self.talkList:
             sessionFound = False
@@ -90,25 +90,71 @@ class FirstFitScheduler:
                     sessionLength = 180
                     size = sum(int(self.talkList[talk]) for talk in session)
                 if talkLength <= (sessionLength - size):
-                    sessions[index].add(talk)            
+                    sessions[index].append(talk)            
                     sessionFound = True
                     break
             if sessionFound == False:
-                sessions.append({talk})
+                sessions.append([talk])
         return sessions
      
+        def scheduleSessions(self):
+            sessions = formSessions()
+            for index, session in enumerate(sessions):
+                if index%2 == 0:
+                    startTime = 540
+                    for index, talk in enumerate(session):
+                        Time = str((startTime)//60) + ':' + str(startTime%60) + 'AM '
+                        if len(str(startTime%60)) < 2:
+                            Time = str((startTime)//60) + ':0' + str(startTime%60) + 'AM '
+                        else:
+                            pass
+                        session[index] = Time + talk
+                        startTime = startTime + int(talkList[talk])
+                else:
+                    startTime = 780
+                    for index, talk in enumerate(session): 
+                        Time = str((startTime//60)-12) + ':' + str(startTime%60) + 'PM '
+                        if len(str(startTime%60)) < 2:
+                            Time = str((startTime//60)-12) + ':0' + str(startTime%60) + 'PM '
+                        else:
+                            pass
+                        session[index] = Time + talk
+                        startTime = startTime + int(talkList[talk])
+            return sessions
+                        
+                
         
-
-
-class Schedule:
-    def __init__(self):
-        self.morning_session = {}
-        self.lunch = '12:00PM Lunch'
-        self.afternoon_session = {}
-        self.networking_event = 'Networking'
-#    def Days():
-#    if __name__ == "__main__":
-#        main()
+class Tracker:
+    '''
+    compiles tracks from sessions, lunch and networking events
+    takes:
+    returns: a list of lists(tracks)
+    '''
+    def __init__(self, sessions, talkPool):
+        self.sessions = sessions
+        self.talkPool = talkpool
+        
+    def makeTracks(self):
+        lunch = '12:00PM Lunch'
+        tracks = []
+        for index, session in enumerate(self.sessions):
+            track = []
+            index = 0
+            for talk in session:
+                startTime = 540
+                if 0 <= startTime//60 < 12:
+                    Time = str((startTime)//60) + ':' + str(startTime%60) + 'AM '
+                if len(str(startTime%60)) < 2:
+                    Time = str((startTime)//60) + ':0' + str(startTime%60) + 'AM '
+                else:
+                    pass
+                track.append(Time + talk)
+                startTime = startTime + int(talkpool[talk])
+            
+            
+            
+       
+        
         
         
 def main(args):
