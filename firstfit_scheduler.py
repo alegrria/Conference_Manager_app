@@ -16,7 +16,7 @@ class FirstFitScheduler:
     def __init__(self, talkList):
         self.talkList = talkList
 
-    def formSessions(self):
+    def formTracks(self):
         sessions = []
         for talk in self.talkList:
             sessionFound = False
