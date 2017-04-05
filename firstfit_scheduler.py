@@ -46,6 +46,7 @@ class FirstFitScheduler:
                         pass
                     session[index] = Time + talk
                     startTime = startTime + int(self.talkList[talk])
+                session.append('12:00PM Lunch')
             else:
                 startTime = 780
                 for index, talk in enumerate(session): 
@@ -57,12 +58,12 @@ class FirstFitScheduler:
                     session[index] = Time + talk
                     startTime = startTime + int(self.talkList[talk])
                 if startTime <= 960:
-                    session.append('4:00PM Networking')
+                    session.append('4:00PM Networking Event')
                 elif startTime > 960:
-                    session.append('5:00PM Networking')       
-                            
+                    session.append('5:00PM Networking Event')
+                    
         tracks = []
         for i in range(0, len(sessions), 2):
-            tracks.append(Track(sessions[i], sessions[i+1]))
+            tracks.append(Track(sessions[i], sessions[i+1], i//2 + 1))
         return tracks
                         
