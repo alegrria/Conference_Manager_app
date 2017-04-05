@@ -95,61 +95,53 @@ class FirstFitScheduler:
                     break
             if sessionFound == False:
                 sessions.append([talk])
-        return sessions
-     
-        def scheduleSessions(self):
-            sessions = formSessions()
-            for index, session in enumerate(sessions):
-                if index%2 == 0:
-                    startTime = 540
-                    for index, talk in enumerate(session):
-                        Time = str((startTime)//60) + ':' + str(startTime%60) + 'AM '
-                        if len(str(startTime%60)) < 2:
-                            Time = str((startTime)//60) + ':0' + str(startTime%60) + 'AM '
-                        else:
-                            pass
-                        session[index] = Time + talk
-                        startTime = startTime + int(talkList[talk])
-                else:
-                    startTime = 780
-                    for index, talk in enumerate(session): 
-                        Time = str((startTime//60)-12) + ':' + str(startTime%60) + 'PM '
-                        if len(str(startTime%60)) < 2:
-                            Time = str((startTime//60)-12) + ':0' + str(startTime%60) + 'PM '
-                        else:
-                            pass
-                        session[index] = Time + talk
-                        startTime = startTime + int(talkList[talk])
-            return sessions
+        
+        for index, session in enumerate(sessions):
+            if index%2 == 0:
+                startTime = 540
+                for index, talk in enumerate(session):
+                    Time = str((startTime)//60) + ':' + str(startTime%60) + 'AM '
+                    if len(str(startTime%60)) < 2:
+                        Time = str((startTime)//60) + ':0' + str(startTime%60) + 'AM '
+                    else:
+                        pass
+                    session[index] = Time + talk
+                    startTime = startTime + int(self.talkList[talk])
+            else:
+                startTime = 780
+                for index, talk in enumerate(session): 
+                    Time = str((startTime//60)-12) + ':' + str(startTime%60) + 'PM '
+                    if len(str(startTime%60)) < 2:
+                        Time = str((startTime//60)-12) + ':0' + str(startTime%60) + 'PM '
+                    else:
+                        pass
+                    session[index] = Time + talk
+                    startTime = startTime + int(self.talkList[talk])
+                if startTime <= 960:
+                    session.append('4:00PM Networking')
+                elif startTime > 960:
+                    session.append('5:00PM Networking')
+                    
+        tracks = []
+        for i in range(0, len(sessions), 2):
+            tracks.append(Track(sessions[i], sessions[i+1]))
+        return tracks
                         
                 
         
-class Tracker:
+class Track:
     '''
     compiles tracks from sessions, lunch and networking events
     takes:
     returns: a list of lists(tracks)
     '''
-    def __init__(self, sessions, talkPool):
-        self.sessions = sessions
-        self.talkPool = talkpool
+    def __init__(self, morning_session, afternoon_session):
+        self.morning_session = morning_session
+        self.afternoon_session = afternoon_session
         
-    def makeTracks(self):
-        lunch = '12:00PM Lunch'
-        tracks = []
-        for index, session in enumerate(self.sessions):
-            track = []
-            index = 0
-            for talk in session:
-                startTime = 540
-                if 0 <= startTime//60 < 12:
-                    Time = str((startTime)//60) + ':' + str(startTime%60) + 'AM '
-                if len(str(startTime%60)) < 2:
-                    Time = str((startTime)//60) + ':0' + str(startTime%60) + 'AM '
-                else:
-                    pass
-                track.append(Time + talk)
-                startTime = startTime + int(talkpool[talk])
+        
+
+            
             
             
             
