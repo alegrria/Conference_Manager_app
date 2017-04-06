@@ -1,11 +1,5 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Created on Tue Apr  4 21:49:27 2017
-
-@author: annakizilova
-"""
-
 class FileReader:
     '''
     reads an input file  

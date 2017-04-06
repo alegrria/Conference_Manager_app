@@ -1,22 +1,17 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Created on Tue Apr  4 21:55:08 2017
-
-@author: annakizilova
-"""
 from track import Track
 
 class FirstFitScheduler:
     '''
-    uses first fit algorithm for compiling sessions 
-    takes: a set of talks and their durations
-    returns: a list of sets (sessions)
+    uses first fit algorithm for compiling sessions, adds timing to talks and forms tracks
+    takes: a dictionary of talks and their durations
+    result: a list with tracks
     '''
     def __init__(self, talkList):
         self.talkList = talkList
-
-    def formTracks(self):
+        
+    def fitSessions(self):
         sessions = []
         for talk in self.talkList:
             sessionFound = False
@@ -34,7 +29,9 @@ class FirstFitScheduler:
                     break
             if sessionFound == False:
                 sessions.append([talk])
+        return sessions
         
+    def addTime(self, sessions):
         for index, session in enumerate(sessions):
             if index%2 == 0:
                 startTime = 540
@@ -61,9 +58,14 @@ class FirstFitScheduler:
                     session.append('4:00PM Networking Event')
                 elif startTime > 960:
                     session.append('5:00PM Networking Event')
-                    
+                        
+    def createTracks(self, sessions):
         tracks = []
         for i in range(0, len(sessions), 2):
             tracks.append(Track(sessions[i], sessions[i+1], i//2 + 1))
         return tracks
-                        
+    
+    def formTracks(self):
+        sessions = self.fitSessions()
+        self.addTime(sessions)
+        return self.createTracks(sessions)

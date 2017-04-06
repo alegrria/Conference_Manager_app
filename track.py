@@ -1,15 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Created on Tue Apr  4 22:12:27 2017
-
-@author: annakizilova
-"""
-
 class Track:
     '''
-    takes: lest of lists(sessions)
-    returns: a list of lists(tracks)
+    takes: sessions and track number
+    returns: strings(tracks)
     '''
     def __init__(self, morning_session, afternoon_session, number):
         self.morning_session = morning_session
