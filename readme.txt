@@ -8,7 +8,7 @@ map talk titles to their durations, use first fit algorithm to create sessions,
 add timing to sessions, form tracks and print them.
 
 I chose the first fit algorithm for creating sessions, because creating sessions 
-is a bin packing problem, which is NP-hard, and optimal solutions require compicated
+is a bin packing problem, which is NP-hard, and optimal solutions require complicated
 algorithms. The first fit algorithm is a greedy algorithm and gives a non-optimal 
 but acceptable solution, totally suitable for the case of making a schedule for
 a conference.
